@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function handleSearch() {
     const city = searchInput.value.trim();
     if (!city) return;
-    
+
     await getWeatherData(city);
 }
 
@@ -47,16 +47,16 @@ async function getWeatherData(city) {
     try {
         showLoading(true);
         hideError();
-        
+
         const response = await fetch(`${BASE_URL}/current.json?key=${API_KEY}&q=${encodeURIComponent(city)}&aqi=no`);
-        
+
         if (!response.ok) {
             throw new Error('City not found');
         }
-        
+
         const data = await response.json();
         displayWeatherData(data);
-        
+
     } catch (error) {
         console.error('Error fetching weather data:', error);
         showError();
@@ -93,25 +93,25 @@ async function getCurrentLocationWeather() {
 // Display weather data in UI
 function displayWeatherData(data) {
     const { current, location } = data;
-    
+
     // Update city and date
     cityElement.textContent = location.name + ', ' + location.country;
     updateDate();
-    
+
     // Update temperature and weather description
     temperatureElement.textContent = Math.round(current.temp_c);
     weatherDescriptionElement.textContent = current.condition.text;
-    
+
     // Update weather icon
     weatherIconElement.src = current.condition.icon;
     weatherIconElement.alt = current.condition.text;
-    
+
     // Update weather stats
     feelsLikeElement.textContent = Math.round(current.feelslike_c) + '°C';
     humidityElement.textContent = current.humidity + '%';
     windSpeedElement.textContent = Math.round(current.wind_kph) + ' km/h';
     visibilityElement.textContent = (current.vis_km) + ' km';
-    
+
     // Show weather box and hide error
     showWeather();
     hideError();
@@ -120,11 +120,11 @@ function displayWeatherData(data) {
 // Update current date
 function updateDate() {
     const now = new Date();
-    const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     };
     dateElement.textContent = now.toLocaleDateString('en-US', options);
 }
@@ -158,40 +158,14 @@ function showLoading(show) {
 }
 
 // Add some nice animations and interactions
-searchInput.addEventListener('focus', () => {
-    searchInput.parentElement.style.transform = 'scale(1.02)';
-});
-
-searchInput.addEventListener('blur', () => {
-    searchInput.parentElement.style.transform = 'scale(1)';
-});
-
 // Add smooth transitions for weather stats
 document.addEventListener('DOMContentLoaded', () => {
+    // Optional: Add staggered delay if not handled by CSS nth-child
     const stats = document.querySelectorAll('.stat');
     stats.forEach((stat, index) => {
-        stat.style.animationDelay = `${index * 0.1}s`;
-        stat.style.animation = 'fadeInUp 0.6s ease forwards';
+        stat.style.animation = `fadeIn 0.5s ease forwards ${index * 0.1}s`;
+        stat.style.opacity = '0'; // Start hidden
     });
 });
 
-// Add CSS animation for stats
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .stat {
-        opacity: 0;
-    }
-`;
-document.head.appendChild(style);
 
