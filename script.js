@@ -1,5 +1,5 @@
 // Weather API configuration
-const API_KEY = '632bd1af817b42c2a8a132035251608';
+const API_KEY = '73f6431171c642f889b140733252912';
 const BASE_URL = 'https://api.weatherapi.com/v1';
 
 // DOM elements
@@ -194,3 +194,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
